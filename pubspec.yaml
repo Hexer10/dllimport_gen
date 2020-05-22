@@ -1,7 +1,7 @@
 name: dllimport_gen
 description: A code generation tool that aims to quickly generate dart code from the windows api documentation emulating the DllImport notation in C#.
 version: 1.0.0
-# homepage: https://www.example.com
+homepage: https://github.com/Hexer10/dllimport_gen
 
 environment:
   sdk: '>=2.0.0 <3.0.0'
@@ -12,4 +12,4 @@ dependencies:
   build: ^1.3.0
 
 dev_dependencies:
-  effective_dart: ^1.2.0
+  effective_dart: ^1.2.1
