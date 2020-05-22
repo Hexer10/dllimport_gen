@@ -8,7 +8,7 @@ part 'example.g.dart';
 
 @DllImport('user32.dll')
 abstract class User32 {
-  /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setcursorposnon_constant_identifier_names
+  /// https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setcursorpos
   BOOL SetCursorPos(int X, int Y);
 }
 
