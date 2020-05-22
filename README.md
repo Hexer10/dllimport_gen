@@ -4,7 +4,9 @@ A code generation tool that aims to quickly generate dart code from the windows 
 Example:
 
 ```dart
-part 'example.g.dart';
+import 'package:dllimport_gen/dll_import.dart';
+
+import 'example.ffi.g.dart';
 
 @DllImport('user32.dll')
 abstract class User32 {

@@ -1,6 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-
-part of 'example.dart';
+import 'dart:ffi';
 
 // **************************************************************************
 // DllImportGenerator

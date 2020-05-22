@@ -1,8 +1,6 @@
-import 'dart:ffi';
-
 import 'package:dllimport_gen/dll_import.dart';
 
-part 'example.g.dart';
+import 'example.ffi.g.dart';
 
 @DllImport('user32.dll')
 abstract class User32 {
