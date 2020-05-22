@@ -1,0 +1,8 @@
+builders:
+  dll_import:
+    import: "package:dllimport_gen/builder.dart"
+    builder_factories: ["dllImportBuilder"]
+    build_extensions: {".dart": ["dllimport.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

@@ -1,0 +1,11 @@
+name: dllimport_gen_example
+
+environment:
+  sdk: '>=2.0.0 <3.0.0'
+
+dependencies:
+  dllimport_gen:
+    path: ../
+
+dev_dependencies:
+  build_runner: ^1.10.0
