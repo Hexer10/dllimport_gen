@@ -5,3 +5,11 @@ class DllImport {
 
   const DllImport(this.library);
 }
+
+/// Import custom Struct libraries.
+class Import {
+  /// Dart library location.
+  final String path;
+
+  const Import(this.path);
+}

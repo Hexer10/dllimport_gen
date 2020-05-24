@@ -1,15 +1,23 @@
+import 'dart:async';
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_gen/src/output_helpers.dart'; // ignore: implementation_imports
 
 import '../annotations.dart';
 import 'mapping.dart';
 
-class DllImportGenerator extends GeneratorForAnnotation<DllImport> {
-  @override
-  dynamic generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) {
+class DllImportGenerator extends Generator {
+  const DllImportGenerator();
+
+  TypeChecker get dllImportType => TypeChecker.fromRuntime(DllImport);
+
+  TypeChecker get importType => TypeChecker.fromRuntime(Import);
+
+  dynamic generateForAnnotatedElement(Element element,
+      ConstantReader annotation, BuildStep buildStep, LibraryReader library) {
     var dll = annotation.read('library').stringValue;
     if (element.kind != ElementKind.CLASS) {
       throw ArgumentError.value(element.kind, 'element.kind',
@@ -24,13 +32,10 @@ class DllImportGenerator extends GeneratorForAnnotation<DllImport> {
     var ffiFunctions = <FFIFunction>[];
     for (var method in dllClass.methods) {
       var ffiFunc = FFIFunction();
-      var returnTypeC = typeMap[method.returnType.element.name].ffiType;
-      if (returnTypeC == null) {
-        throw ArgumentError.value('element.name',
-            method.returnType.element.name, 'Invalid element name');
-      }
+      var elementName = method.returnType.element.name;
 
-      var returnTypeDart = typeMap[returnTypeC].dartType;
+      var returnTypeC = getffiType(elementName);
+      var returnTypeDart = getDartType(elementName);
 
       var cParams = method.parameters
           .map((e) =>
@@ -74,6 +79,34 @@ class DllImportGenerator extends GeneratorForAnnotation<DllImport> {
         }
         ''';
   }
+
+  // Override to implement the @Import annotation
+  @override
+  FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
+    final values = <String>{};
+    final imports = <String>{};
+
+    for (var annotatedElement in library.annotatedWith(importType)) {
+      var path = annotatedElement.annotation.read('path').stringValue;
+      assert(path != null);
+      imports.add('import \'$path\';');
+    }
+
+    for (var annotatedElement in library.annotatedWith(dllImportType)) {
+      final generatedValue = generateForAnnotatedElement(
+          annotatedElement.element,
+          annotatedElement.annotation,
+          buildStep,
+          library);
+      await for (var value in normalizeGeneratorOutput(generatedValue)) {
+        assert(value == null || (value.length == value.trim().length));
+        values.add(value);
+      }
+    }
+
+    // ignore: prefer_interpolation_to_compose_strings
+    return imports.join('') + '\n' + values.join('\n\n');
+  }
 }
 
 class FFIFunction {
@@ -87,7 +120,7 @@ class FFIFunction {
 String getffiType(String str) {
   var type = typeMap[str]?.ffiType;
   if (type == null) {
-    throw ArgumentError.value(str, 'type', 'Invalid type: $str');
+    throw ArgumentError.value(str, 'type');
   }
   return type;
 }
@@ -96,7 +129,7 @@ String getffiType(String str) {
 String getDartType(String str) {
   var type = typeMap[str]?.dartType;
   if (type == null) {
-    throw ArgumentError.value(str, 'type', 'Invalid type: $str');
+    throw ArgumentError.value(str, 'type');
   }
   return type;
 }

@@ -34,3 +34,7 @@ Run the code generation:
 `pub run build_runner build`
 
 See `example/`
+
+<hr>
+
+Use `@Import('<library>')` to import a custom library in the generated file, if for example you're using your custom structs.
