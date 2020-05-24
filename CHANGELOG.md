@@ -8,4 +8,8 @@
 
 ## 1.2.0
 
-- Add `@Import` annotation. 
+- Add `@Import` annotation.
+
+## 1.2.1
+
+- Implement more types. 

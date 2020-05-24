@@ -141,3 +141,7 @@ abstract class LPMSG {}
 /// A pointer to a constant null-terminated string of 8-bit Windows (ANSI)
 /// characters.
 abstract class LPCSTR {}
+
+abstract class LPCVOID {}
+
+abstract class SIZE_T {}

@@ -38,6 +38,8 @@ Map<String, Mapping> typeMap = {
   'HOOKPROC': Mapping('Pointer', 'Pointer'),
   'LPMSG': Mapping('Pointer', 'Pointer'),
   'LPCSTR': Mapping('Pointer', 'Pointer'),
+  'LPCVOID': Mapping('Pointer', 'Pointer'),
+  'SIZE_T': Mapping('Uint16', 'int'),
 
   /* DART FFI TYPES*/
   'Int8': Mapping('Int8', 'int'),
