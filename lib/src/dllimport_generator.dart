@@ -52,8 +52,8 @@ class DllImportGenerator extends Generator {
           '${getGenericTypes(method.returnType)} Function($cParams);';
       ffiFunc.dartTypeDef = 'typedef _${method.name}Dart = $returnTypeDart'
           '${getGenericTypes(method.returnType)} Function($dartParams);';
-      ffiFunc.funcLookup =
-          'final _${method.name}Func = _dylib.lookupFunction<_${method.name}C, '
+      ffiFunc.funcLookup = 'Function get _${method.name}Func => '
+          '_dylib.lookupFunction<_${method.name}C, '
           '_${method.name}Dart>(\'${method.name}\');';
       ffiFunc.funcDecl =
           '$returnTypeDart ${method.name}($dartParams) => _${method.name}'
@@ -66,10 +66,10 @@ class DllImportGenerator extends Generator {
     return '''
         ${ffiFunctions.map((e) => '${e.cTypeDef}\n${e.dartTypeDef}').join('\n')}
         class $className {
-          static final _dylib = DynamicLibrary.open('$dll');
+          final DynamicLibrary _dylib;
           static final _instance = $className._();
           
-          $className._();
+          $className._() : _dylib = DynamicLibrary.open('$dll');
           
           factory $className() => _instance;
           

@@ -13,3 +13,11 @@
 ## 1.2.1
 
 - Implement more types. 
+
+## 1.2.2
+
+- Fix possible symbol not found(127) error.
+
+## 1.2.3
+
+- Add `DynamicLibrary` type for `_dylib`
